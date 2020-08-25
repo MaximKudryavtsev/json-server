@@ -37,7 +37,10 @@ server.use("/login", (req, res) => {
                 success: true
             });
         } else {
-            res.sendStatus(404)
+            res.sendStatus(404).jsonp({
+                success: false,
+                message: "User not found"
+            })
         }
     }
 })
