@@ -1,0 +1,23 @@
+{
+  "name": "json-server1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaximKudryavtsev/json-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaximKudryavtsev/json-server/issues"
+  },
+  "homepage": "https://github.com/MaximKudryavtsev/json-server#readme",
+  "dependencies": {
+    "json-server": "^0.16.1",
+    "lowdb": "^1.0.0"
+  }
+}
