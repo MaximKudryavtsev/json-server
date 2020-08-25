@@ -32,9 +32,13 @@ server.use("/login", (req, res) => {
         const user = db.get('users')
             .find({ email: data.email, password: data.password })
             .value()
-        res.jsonp({
-            success: !!user
-        });
+        if (user) {
+            res.jsonp({
+                success: true
+            });
+        } else {
+            res.sendStatus(404)
+        }
     }
 })
 
