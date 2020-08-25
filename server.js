@@ -11,7 +11,7 @@ const db = low(adapter)
 server.use(middlewares)
 
 server.use(jsonServer.bodyParser)
-server.use("/users", (req, res, next) => {
+server.use("/users", (req, res) => {
     if (req.method === 'POST') {
         const data = req.body;
         db.get("users").push({
@@ -24,8 +24,18 @@ server.use("/users", (req, res, next) => {
             success: true
         });
     }
-    // Continue to JSON Server router
-    next()
+})
+
+server.use("/login", (req, res) => {
+    if (req.method === 'POST') {
+        const data = req.body;
+        const user = db.get('users')
+            .find({ email: data.email, password: data.password })
+            .value()
+        res.jsonp({
+            success: !!user
+        });
+    }
 })
 
 server.use(router)
