@@ -60,18 +60,21 @@ server.get("/users/:id", (req, res) => {
 })
 
 server.get("/albums/:id/photos", (req, res) => {
-    const data = db.get("photos").find({albumId: Number(req.params.id)}).value();
-    res.jsonp(data);
+    const data = db.get("photos").value();
+    const photos = data.filter((item) => item.albumId === Number(req.params.id))
+    res.jsonp(photos);
 })
 
 server.get("/users/:id/albums", (req, res) => {
-    const data = db.get("albums").find({userId: Number(req.params.id)}).value();
-    res.jsonp(data);
+    const data = db.get("albums").value();
+    const albums = data.filter((item) => item.userId === Number(req.params.id))
+    res.jsonp(albums);
 })
 
 server.get("/users/:id/todos", (req, res) => {
-    const data = db.get("todos").find({userId: Number(req.params.id)}).value();
-    res.jsonp(data);
+    const data = db.get("todos").value();
+    const todos = data.filter((item) => item.userId === Number(req.params.id))
+    res.jsonp(todos);
 })
 
 server.get("/users/:id/posts", (req, res) => {
