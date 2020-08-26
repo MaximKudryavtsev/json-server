@@ -43,6 +43,11 @@ server.get("/todos", (req, res) => {
 })
 
 
+server.get("/posts/:id", (req, res) => {
+    const data = db.get("posts").find({id: Number(req.params.id)}).value();
+    res.jsonp(data);
+})
+
 server.get("/posts/:id/comments", (req, res) => {
     const data = db.get("comments").find({postId: Number(req.params.id)}).value();
     res.jsonp(data);
@@ -110,8 +115,9 @@ server.use("/login", (req, res) => {
 server.use("/posts", (req, res) => {
     if (req.method === 'POST') {
         const data = req.body;
+        const posts = db.get("posts").value()
         db.get('posts')
-            .push({ ...data })
+            .push({ ...data, id: Number(posts[posts.length - 1].id) + 1 })
             .write()
         res.jsonp({
             success: true
