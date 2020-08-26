@@ -43,13 +43,14 @@ server.get("/todos", (req, res) => {
 })
 
 
-server.get("/posts/:id", (req, res) => {
-    const data = db.get("posts").find({id: Number(req.params.id)}).value();
-    res.jsonp(data);
+server.get("/posts/:id/comments", (req, res) => {
+    const data = db.get("comments").value();
+    const comments = data.filter((item) => item.postId === Number(req.params.id))
+    res.jsonp(comments);
 })
 
-server.get("/posts/:id/comments", (req, res) => {
-    const data = db.get("comments").find({postId: Number(req.params.id)}).value();
+server.get("/posts/:id", (req, res) => {
+    const data = db.get("posts").find({id: Number(req.params.id)}).value();
     res.jsonp(data);
 })
 
