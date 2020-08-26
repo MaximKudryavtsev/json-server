@@ -106,7 +106,10 @@ server.use("/login", (req, res) => {
             .value()
         if (user) {
             res.jsonp({
-                success: true
+                success: true,
+                data: {
+                    user
+                }
             });
         } else {
             res.status(404).jsonp({
