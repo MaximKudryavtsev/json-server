@@ -75,8 +75,9 @@ server.get("/users/:id/todos", (req, res) => {
 })
 
 server.get("/users/:id/posts", (req, res) => {
-    const data = db.get("posts").find({userId: Number(req.params.id)}).value();
-    res.jsonp(data);
+    const data = db.get("posts").value();
+    const posts = data.filter((item) => item.userId === Number(req.params.id));
+    res.jsonp(posts);
 })
 
 server.use("/users", (req, res) => {
