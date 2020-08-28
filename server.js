@@ -85,10 +85,11 @@ server.get("/users/:id/posts", (req, res) => {
 })
 
 server.use("/posts/:id", (req, res) => {
-    if (req.method === 'DELETE') {
+    console.log(req.method);
+    if (req.method === 'PUT') {
         const posts = db.get("posts").value();
         const index = lodash.findIndex(posts, (item) => item.id === Number(req.params.id));
-        posts.splice(index, 1);
+        posts[index] = {id: Number(req.params.id), ...req.body}
         db.get("posts")
             .push([...posts])
             .write()
@@ -98,11 +99,11 @@ server.use("/posts/:id", (req, res) => {
     }
 })
 
-server.use("/posts/:id", (req, res) => {
-    if (req.method === 'PUT') {
+server.use("/posts/delete/:id", (req, res) => {
+    if (req.method === 'DELETE') {
         const posts = db.get("posts").value();
         const index = lodash.findIndex(posts, (item) => item.id === Number(req.params.id));
-        posts[index] = {id: Number(req.params.id), ...req.body}
+        posts.splice(index, 1);
         db.get("posts")
             .push([...posts])
             .write()
