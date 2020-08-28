@@ -102,7 +102,6 @@ server.use("/posts/:id", (req, res) => {
     if (req.method === 'PUT') {
         const posts = db.get("posts").value();
         const index = lodash.findIndex(posts, (item) => item.id === Number(req.params.id));
-        posts.splice(index, 1);
         posts[index] = {id: Number(req.params.id), ...req.body}
         db.get("posts")
             .push([...posts])
