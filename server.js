@@ -145,6 +145,34 @@ server.use("/comments", (req, res) => {
     }
 })
 
+server.use("/posts/:id", (req, res) => {
+    if (req.method === 'DELETE') {
+        const posts = db.get("posts").value();
+        const index = posts.findIndex((item) => item.id === Number(req.params.id));
+        posts.splice(index, 1);
+        db.get("posts")
+            .push(posts)
+            .write()
+        res.jsonp({
+            success: true
+        });
+    }
+})
+
+server.use("/posts/:id", (req, res) => {
+    if (req.method === 'PUT') {
+        const posts = db.get("posts").value();
+        const index = posts.findIndex((item) => item.id === Number(req.params.id));
+        posts[index] = {id: Number(req.params.id), ...req.body}
+        db.get("posts")
+            .push(posts)
+            .write()
+        res.jsonp({
+            success: true
+        });
+    }
+})
+
 server.use(router)
 server.listen(3002, () => {
     console.log('JSON Server is running')
