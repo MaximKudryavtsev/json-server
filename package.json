@@ -18,6 +18,7 @@
   "homepage": "https://github.com/MaximKudryavtsev/json-server#readme",
   "dependencies": {
     "json-server": "^0.16.1",
+    "lodash": "^4.17.20",
     "lowdb": "^1.0.0"
   }
 }

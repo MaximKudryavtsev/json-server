@@ -4,6 +4,7 @@ const server = jsonServer.create()
 const router = jsonServer.router('db.json')
 const middlewares = jsonServer.defaults()
 const FileSync = require('lowdb/adapters/FileSync')
+const lodash = require("lodash");
 
 const adapter = new FileSync('db.json')
 const db = low(adapter)
@@ -83,6 +84,35 @@ server.get("/users/:id/posts", (req, res) => {
     res.jsonp(posts);
 })
 
+server.use("/posts/:id", (req, res) => {
+    if (req.method === 'DELETE') {
+        const posts = db.get("posts").value();
+        const index = lodash.findIndex(posts, (item) => item.id === Number(req.params.id));
+        posts.splice(index, 1);
+        db.get("posts")
+            .push([...posts])
+            .write()
+        res.jsonp({
+            success: true
+        });
+    }
+})
+
+server.use("/posts/:id", (req, res) => {
+    if (req.method === 'PUT') {
+        const posts = db.get("posts").value();
+        const index = lodash.findIndex(posts, (item) => item.id === Number(req.params.id));
+        posts.splice(index, 1);
+        posts[index] = {id: Number(req.params.id), ...req.body}
+        db.get("posts")
+            .push([...posts])
+            .write()
+        res.jsonp({
+            success: true
+        });
+    }
+})
+
 server.use("/users", (req, res) => {
     if (req.method === 'POST') {
         const data = req.body;
@@ -138,34 +168,6 @@ server.use("/comments", (req, res) => {
         const data = req.body;
         db.get(`posts/${data.postId}/comments`)
             .push({ ...data })
-            .write()
-        res.jsonp({
-            success: true
-        });
-    }
-})
-
-server.use("/posts/:id", (req, res) => {
-    if (req.method === 'DELETE') {
-        const posts = db.get("posts").value();
-        const index = posts.findIndex((item) => item.id === Number(req.params.id));
-        posts.splice(index, 1);
-        db.get("posts")
-            .push(posts)
-            .write()
-        res.jsonp({
-            success: true
-        });
-    }
-})
-
-server.use("/posts/:id", (req, res) => {
-    if (req.method === 'PUT') {
-        const posts = db.get("posts").value();
-        const index = posts.findIndex((item) => item.id === Number(req.params.id));
-        posts[index] = {id: Number(req.params.id), ...req.body}
-        db.get("posts")
-            .push(posts)
             .write()
         res.jsonp({
             success: true
